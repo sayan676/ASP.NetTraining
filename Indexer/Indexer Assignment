@@ -1,0 +1,78 @@
+//Search customer details
+//custid
+//custname
+//pincode
+//mobileno
+
+//search by mobile no and pincode
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Sayan
+{
+    public class Customer
+    {
+        public string CustID { get; set; }
+        public string CustName { get; set; }
+        public int PinCode { get; set; }
+        public string MobileNo { get; set; }
+        public void Display()
+        {
+            Console.WriteLine("Custumer ID:\t{0}\nCustomer Name:\t{1}\nPin Code:\t{2}\nMobile Number:\t{3}", CustID, CustName, PinCode, MobileNo);
+        }
+    }
+    public class CustomerList
+    {
+        List<Customer> custList = new List<Customer>();
+        public void AddCustomer()
+        {
+            custList.Add(new Customer { CustID = "1", CustName = "Sayan", PinCode = 50, MobileNo = "9874561230" });
+            custList.Add(new Customer { CustID = "2", CustName = "Saswata", PinCode = 60, MobileNo = "8974561230" });
+            custList.Add(new Customer { CustID = "3", CustName = "Shoham", PinCode = 70, MobileNo = "7474561230" });
+            custList.Add(new Customer { CustID = "4", CustName = "Sambit", PinCode = 50, MobileNo = "9974561230" });
+        }
+        public Customer this[int Pin]
+        {
+            get
+            {
+                foreach (Customer obj in custList)
+                {
+                    if (obj.PinCode == Pin)
+                        return obj;
+                }
+                return null;
+            }
+        }
+        public Customer this[string Mobile]
+        {
+            get
+            {
+                foreach (Customer obj in custList)
+                {
+                    if (obj.MobileNo == "Mobile")
+                        return obj;
+                }
+                return null;
+            }
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Customer c = new Customer();
+            CustomerList cl = new CustomerList();
+            cl.AddCustomer();
+            Console.Write("Enter pincode to search:\t");
+            int pin = int.Parse(Console.ReadLine());
+            c = cl[pin];
+            c.Display();
+            Console.ReadKey(false);
+        }
+    }
+}
