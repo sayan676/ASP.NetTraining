@@ -1,0 +1,82 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SayanFeb1
+{
+    public class Product
+    {
+        public string ProdID { get; set; }
+        public string Name { get; set; }
+        public int Price { get; set; }
+    }
+    public class ProductDetails
+    {
+        List<Product> list1 = new List<Product>();
+        public void AddProduct()
+        {
+            list1.Add(new Product { ProdID = "1", Name = "Watch", Price = 3500 });
+            list1.Add(new Product { ProdID = "2", Name = "Ball", Price = 350 });
+            list1.Add(new Product { ProdID = "3", Name = "Mobile", Price = 35000 });
+            list1.Add(new Product { ProdID = "4", Name = "Laptop", Price = 50000 });
+        }
+        public Product SearchProduct(int price)
+        {
+            foreach (Product prd in list1)
+            {
+                if (prd.Price == price)
+                    return prd;
+            }
+            return null;
+        }
+        public Product SearchProduct(string Name)
+        {
+            foreach (Product prd in list1)
+            {
+                if (prd.Name == Name)
+                    return prd;
+            }
+            return null;
+        }
+        public Product this[int price]
+        {
+            get
+            {
+                foreach (Product prd in list1)
+                {
+                    if (prd.Price == price)
+                        return prd;
+                }
+                return null;
+            }
+        }
+        public Product this[string name]
+        {
+            get
+            {
+                foreach (Product prd in list1)
+                {
+                    if (prd.Name == name)
+                        return prd;
+                }
+                return null;
+            }
+        }
+    }
+    class Execute
+    {
+        static void Main(string[] args)
+        {
+            ProductDetails pd = new ProductDetails();
+            Product prd = new Product();
+            pd.AddProduct();
+            prd = pd.SearchProduct(3500);
+            prd = pd.SearchProduct("Watch");
+            prd = pd["Ball"];
+            prd = pd[350];
+            Console.ReadKey(false);
+        }
+    }
+}
