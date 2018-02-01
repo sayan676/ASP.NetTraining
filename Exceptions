@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Sayan
+{
+    class QuantityZeroException : ApplicationException
+    {
+        public QuantityZeroException() : base()
+        { }
+        public QuantityZeroException(string message) : base(message) { }
+    }
+    class Program
+    {
+        public static void GetDetails()
+        {
+            Console.Write("Enter Quantity:\t");
+            int Qty = int.Parse(Console.ReadLine());
+            if (Qty <= 0)
+            {
+                throw new QuantityZeroException("Quantity cannnot be zero or less");
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            try
+            {
+                GetDetails(); //Since static method so object creation not required
+            }
+            catch (QuantityZeroException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            Console.ReadKey(false);
+        }
+    }
+}
