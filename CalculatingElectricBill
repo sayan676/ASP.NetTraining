@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Day3
+{
+    class ElectricBill
+    {
+        int ID, Unit;
+        String Name;
+        public void GetInput()
+        {
+            Console.Write("Enter Customer ID :\t");
+            ID = Convert.ToInt16(Console.ReadLine());
+            Console.Write("Enter Customer Name :\t");
+            Name = Console.ReadLine();
+            Console.Write("Enter Unit Consumed :\t");
+            Unit = Convert.ToInt16(Console.ReadLine());
+        }
+        public float Calculate()
+        {
+            float Amt = 0;
+            if (Unit < 200)
+            {
+                Amt = 1.2f * Unit;
+            }
+            else if (Unit >= 200 && Unit < 400)
+            {
+                Amt = 1.5f * Unit;
+            }
+            else if (Unit >= 400 && Unit < 600)
+            {
+                Amt = 1.5f * Unit;
+            }
+            else if (Unit >= 600)
+            {
+                Amt = 2.0f * Unit;
+            }
+            return Amt;
+        }
+        public float TotalAmt()
+        {
+            float Amt;
+            Amt = Calculate();
+            if (Amt > 500)
+                return ((Amt * 15) / 100 + Amt);
+            else
+                return Amt;
+        }
+
+        static void Main(string[] args)
+        {
+            float Amt;
+            ElectricBill obj = new ElectricBill();
+            obj.GetInput();
+            Amt = obj.TotalAmt();
+            if (Amt < 100)
+                Console.WriteLine("The total amount is 100");
+            else
+                Console.WriteLine("The total amount is : " + Amt);
+            Console.ReadKey(false);
+        }
+    }
+}
