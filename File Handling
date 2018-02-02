@@ -1,0 +1,101 @@
+using System;
+using System.IO;
+
+namespace FileHandling
+{
+    public class FileExample
+    {
+        private FileStream fs = null;
+        private StreamWriter sw = null;
+        private StreamReader sr = null;
+
+        public int ID { get; set; }
+        public string Name { get; set; }
+
+        public void GetData()
+        {
+            Console.Write("Enter Student ID:\t");
+            ID = int.Parse(Console.ReadLine());
+            Console.Write("Enter Student Name:\t");
+            Name = Console.ReadLine();
+        }
+
+        public void WriteToFile()
+        {
+            try
+            {
+                fs = new FileStream(@"C:\Sayan Sadhukhan CGI\2018.02.02\Files\MyFile.txt", FileMode.OpenOrCreate, FileAccess.Write);
+                sw = new StreamWriter(fs);
+                sw.WriteLine("Student ID : " + ID);
+                sw.WriteLine("Name : " + Name);
+                sw.Flush();
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (NullReferenceException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                if (sw != null)
+                    sw.Close();
+                if (fs != null)
+                    fs.Close();
+            }
+        }
+
+        public void ReadFromFile()
+        {
+            try
+            {
+                fs = new FileStream(@"C:\Sayan Sadhukhan CGI\2018.02.02\Files\MyFile.txt", FileMode.Open, FileAccess.Read);
+                sr = new StreamReader(fs);
+                sr.BaseStream.Seek(10, SeekOrigin.Begin);
+                string str = sr.ReadToEnd();
+                if (str != null)
+                    Console.WriteLine(str);
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (NullReferenceException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                if (sr != null)
+                    sr.Close();
+                if (fs != null)
+                    fs.Close();
+            }
+        }
+        public void WriteToConsole()
+        {
+            Console.WriteLine("\nID: {0}\nName: {1}", ID, Name);
+        }
+        static void Main(string[] args)
+        {
+            FileExample fe = new FileExample();
+            fe.GetData();
+            fe.WriteToConsole();
+            Console.WriteLine("-------------------------------------------");
+            Console.WriteLine("Writing & Reading From File:");
+            fe.WriteToFile();
+            fe.ReadFromFile();
+            Console.ReadKey(false);
+        }
+    }
+}
