@@ -1,0 +1,79 @@
+using System;
+using System.Collections.Generic;
+namespace FileHandling
+{
+    public class IComparableEx : IComparable<IComparableEx>
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public int CompareTo(IComparableEx other)
+        {
+            if (this.ID > other.ID)
+                return 1;
+            else if (this.ID < other.ID)
+                return -1;
+            else
+                return 0;
+        }
+    }
+    public class IDAsc : IComparer<IComparableEx>
+    {
+        public int Compare(IComparableEx x, IComparableEx y)
+        {
+            if (x.ID > y.ID)
+                return 1;
+            else if (x.ID < y.ID)
+                return -1;
+            else
+                return 0;
+
+        }
+    }
+    public class IDDesc : IComparer<IComparableEx>
+    {
+        public int Compare(IComparableEx x, IComparableEx y)
+        {
+            if (x.ID < y.ID)
+                return 1;
+            else if (x.ID > y.ID)
+                return -1;
+            else
+                return 0;
+        }
+    }
+    public class Test
+    {
+        static void Main(string[] args)
+        {
+            List<IComparableEx> list = new List<IComparableEx>();
+            list.Add(new IComparableEx { ID = 2, Name = "Sayan" });
+            list.Add(new IComparableEx { ID = 1, Name = "Anshu" });
+            list.Add(new IComparableEx { ID = 3, Name = "Archi" });
+            list.Sort();
+            Console.WriteLine("----------------------------------------");
+            Console.WriteLine("Sorting using IComparable");
+            Console.WriteLine("----------------------------------------");
+            foreach (IComparableEx i in list)
+            {
+                Console.WriteLine("\nID : " + i.ID + "\nName : " + i.Name);
+            }
+            Console.WriteLine("----------------------------------------");
+            Console.WriteLine("Sorting using IComparer");
+            Console.WriteLine("----------------------------------------");
+            Console.WriteLine("Ascending Order:");
+            IDAsc asc = new IDAsc();
+            list.Sort(asc);
+            foreach (IComparableEx i in list)
+            {
+                Console.WriteLine(i.ID + "\t" + i.Name);
+            }
+            Console.WriteLine("Descending Order:");
+            IDDesc desc = new IDDesc();
+            list.Sort(desc);
+            foreach (IComparableEx i in list)
+            {
+                Console.WriteLine(i.ID + "\t" + i.Name);
+            }
+        }
+    }
+}
