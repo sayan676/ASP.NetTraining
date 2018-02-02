@@ -1,0 +1,48 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+class Example
+{
+    class Employee
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public double Salary { get; set; }
+    }
+
+    static void Main(string[] args)
+    {
+        List<Employee> emp = new List<Employee>();
+        emp.Add(new Employee { ID = 1, Name = "ABC", Salary = 35000 });
+        emp.Add(new Employee { ID = 2, Name = "XYZ", Salary = 40000 });
+        emp.Add(new Employee { ID = 3, Name = "QQQ", Salary = 25000 });
+
+        var data = emp.Where(x => x.Salary > 25000);
+
+        foreach(var e in data)
+        {
+            Console.WriteLine(e.ID + "\t" + e.Salary);
+        }
+
+        //List<int> l1 = new List<int> { 10, 2, 4, 5, 7, 8, 12 };
+
+        //var even = l1.Where(x => x % 2 == 0).OrderByDescending(a => a);
+
+        //foreach (var i in even)
+        //{
+        //    Console.WriteLine(i);
+        //}
+
+        //List<string> color = new List<string> { "Red", "Blue", "Black", "Green" };
+
+        //var col = color.Where(x => x.Contains("e"));
+        //col = col.Where(x => x.StartsWith("B"));
+        //Console.WriteLine(col.Count());
+
+        //foreach(var c in col)
+        //{
+        //    Console.WriteLine(c);
+        //}
+    }
+}\
