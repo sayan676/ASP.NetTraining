@@ -27,11 +27,18 @@ namespace SayanFeb1
         {
             Console.WriteLine("Count Down Ends");
         }
+        public void Display()
+        {
+            Console.WriteLine("Do Something");
+        }
         static void Main(string[] args)
         {
             EventExample obj = new EventExample();
             CountdownDelegate cd = new CountdownDelegate(obj.Countdown);
+            cd += obj.Display;
+            //cd += obj.RaiseEvent;
             obj.MyEvent += new CountdownDelegate(obj.RaiseEvent);
+            obj.MyEvent += new CountdownDelegate(obj.Display);
             cd();
             Console.ReadKey(false);
         }
