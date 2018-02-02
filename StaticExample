@@ -1,0 +1,28 @@
+using System;
+
+namespace Day3
+{
+    class StaticExample
+    {
+        public int NonStatic = 10;
+        static public int StaticVariable = 10;
+    }
+    class Execute
+    {
+        public void Method1()
+        {
+            StaticExample obj1 = new StaticExample();
+            obj1.NonStatic++;
+            StaticExample.StaticVariable++;
+        }
+        static void Main()
+        {
+            Execute obj = new Execute();
+            StaticExample obj1 = new StaticExample();
+            obj.Method1();
+            Console.WriteLine("Value of non-static : " + obj1.NonStatic);
+            Console.WriteLine("Value of static : " + StaticExample.StaticVariable);
+            Console.ReadKey(false);
+        }
+    }
+}
