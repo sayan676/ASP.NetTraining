@@ -1,0 +1,36 @@
+using System;
+
+public class Example
+{
+    delegate void MyDelegate(string a, string b);
+    //public void Displa(string x,string y)
+    //{
+    //    Console.WriteLine(x + "\t" + y);
+    //}
+
+    static void Main(string[] args)
+    {
+        //Using Object
+        //Example obj = new Example();
+        //obj.Displa("sdsdf", "sdfsdf");
+
+        ////using Delegate
+        //MyDelegate d = obj.Displa;
+        //d("sdfsdf", "sdfsdf");
+
+        //Anonymous Method / Function
+        MyDelegate d1 = delegate (string x, string y)
+        {
+            Console.WriteLine(x + "\t" + y);
+        };
+        d1("Hi", "Hello");
+
+        //Lambda Expression
+
+        MyDelegate d2 = (x, y) =>
+        {
+            Console.WriteLine(x + "\t" + y);
+        };
+        d2("Hello", "World");
+    }
+}
