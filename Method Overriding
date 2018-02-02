@@ -1,0 +1,53 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Inheritance
+{
+    public abstract class Books
+    {
+        protected int ISBN = 1;
+        protected string Title, Author;
+        protected float Price;
+        abstract public void GetBookDetail();  //Abstract Method Initialized
+        public abstract void PrintBookDetail(); //Abstract Method Initialized
+        virtual public void Sample()
+        {
+            Console.WriteLine("Virtual in Abstract");
+        }
+    }
+    public class Ebook : Books
+    {
+        string Url;
+        public override void GetBookDetail()
+        {
+            Console.Write("Enter Title :\t");
+            //ISBN = int.Parse(Console.ReadLine());
+            Title = Console.ReadLine();
+            Console.Write("Enter Author :\t");
+            Author = Console.ReadLine();
+            Console.Write("Enter Price :\t");
+            Price = float.Parse(Console.ReadLine());
+            Console.Write("Enter Url :\t");
+            Url = Console.ReadLine();
+        }
+        public override void PrintBookDetail()
+        {
+            base.Sample();
+            Console.WriteLine("ISBN : {0}\nTitle : {1}", ISBN, Title);
+            Console.WriteLine("Download URL : " + Url);
+        }
+    }
+    class Execute
+    {
+        static void Main(string[] args)
+        {
+            Ebook ebook = new Ebook();
+            ebook.GetBookDetail();
+            ebook.PrintBookDetail();
+            Console.ReadKey(false);
+        }
+    }
+}
