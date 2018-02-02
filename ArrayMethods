@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Inheritance
+{
+    class ArrayMethod
+    {
+        void GetArray(int a, int[] arr)
+        {
+            for (int i = 0; i < arr.Length; i++)
+            {
+                Console.Write("Enter number {0}:\t", i + 1);
+                arr[i] = int.Parse(Console.ReadLine());
+            }
+        }
+        void PrintArray(int[] arr)
+        {
+            Console.WriteLine("The array is:");
+            foreach (int a in arr)
+            {
+                Console.WriteLine(a);
+            }
+        }
+        void Sort(int[] arr)
+        {
+            Console.WriteLine("The sorted array is:");
+            Array.Sort(arr);
+        }
+        void Reverse(int[] arr)
+        {
+            Console.WriteLine("The reversed array is:");
+            Array.Reverse(arr);
+        }
+        static void Main(string[] args)
+        {
+            Console.Write("Enter the size of the array:\t");
+            int size = int.Parse(Console.ReadLine());
+            int[] arr = new int[size];
+            ArrayMethod obj = new ArrayMethod();
+            obj.GetArray(size, arr);
+            int caseSwitch = 1;
+            Console.WriteLine("Enter Your Choice:\n[1]Display\n[2]Sort\n[3]Reverse\n[0]Exit");
+            caseSwitch = int.Parse(Console.ReadLine());
+            switch (caseSwitch)
+            {
+                case 1:
+                    obj.PrintArray(arr);
+                    break;
+                case 2:
+                    obj.Sort(arr);
+                    obj.PrintArray(arr);
+                    break;
+                case 3:
+                    obj.Reverse(arr);
+                    obj.PrintArray(arr);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
