@@ -1,0 +1,194 @@
+using System;
+
+namespace ProductSystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int c;
+            char ch;
+            GetDetails gd = new GetDetails();
+            Product prd = new Product();
+            do
+            {
+                Console.WriteLine("\nSELECT AN OPTION:\n1.Admin\n2.User");
+                Console.WriteLine("---------------------------------------------");
+                Console.Write("Enter Option:\t");
+                c = int.Parse(Console.ReadLine());
+                switch (c)
+                {
+                    case 1:
+                        gd.GetData();
+                        if(gd.ID=="admin")
+                        {
+                            Console.Clear();
+                            prd.Add();
+                            gd.WriteToFile();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Wrong User ID!");
+                        }
+                        break;
+                    case 2:
+                        gd.GetData();
+                        if (gd.ID == "user")
+                        {
+                            Console.Clear();
+                            prd.View();
+                            gd.WriteToFile();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Wrong User ID!");
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("Wrong Option!Try again?");
+                        break;
+                }
+                Console.WriteLine("\nDo you want continue (Y|N):");
+                ch = char.Parse(Console.ReadLine());
+            } while (ch == 'y' || ch == 'Y');
+        }
+    }
+}
+----------------------------------------------------------------------------------------------------------------------------------------
+using System;
+using System.IO;
+
+namespace ProductSystem
+{
+    class GetDetails
+    {
+        private FileStream fs = null;
+        private StreamWriter sw = null;
+        //private StreamReader sr = null;
+
+        public string ID { get; set; }
+        public string Pwd { get; set; }
+
+        public void GetData()
+        {
+            Console.Write("Enter User ID:\t");
+            ID = Console.ReadLine();
+            Console.Write("Enter Password:\t");
+            Pwd = Console.ReadLine();
+        }
+        public void WriteToFile()
+        {
+            try
+            {
+                fs = new FileStream(@"C:\Sayan Sadhukhan CGI\2018.02.02\Files\ProductSystem.txt", FileMode.Append, FileAccess.Write);
+                sw = new StreamWriter(fs);
+                sw.WriteLine("User ID : " + ID);
+                sw.WriteLine("Password : " + Pwd);
+                sw.Flush();
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (NullReferenceException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                if (sw != null)
+                    sw.Close();
+                if (fs != null)
+                    fs.Close();
+            }
+        }
+        //public void ReadFromFile()
+        //{
+        //    try
+        //    {
+        //        fs = new FileStream(@"C:\Sayan Sadhukhan CGI\2018.02.02\Files\MyFile.txt", FileMode.Open, FileAccess.Read);
+        //        sr = new StreamReader(fs);
+        //        sr.BaseStream.Seek(10, SeekOrigin.Begin);
+        //        string str = sr.ReadToEnd();
+        //        if (str != null)
+        //            Console.WriteLine(str);
+        //    }
+        //    catch (IOException ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
+        //    catch (NullReferenceException ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
+        //    finally
+        //    {
+        //        if (sr != null)
+        //            sr.Close();
+        //        if (fs != null)
+        //            fs.Close();
+        //    }
+        //}
+        //public void WriteToConsole()
+        //{
+        //    Console.WriteLine("\nUser ID: {0}\nPassword: {1}", ID, Pwd);
+        //}
+    }
+}
+----------------------------------------------------------------------------------------------------------------------------------------
+using System;
+using System.Collections;
+
+namespace ProductSystem
+{
+    public class AddView<T> : CollectionBase
+    {
+        public void AddObj(T obj)
+        {
+            List.Add(obj);
+        }
+    }
+    public class Product
+    {
+        int a = 0;
+        AddView<Product> list = new AddView<Product>();
+        public string Name { get; set; }
+        public int Price { get; set; }
+        public void Add()
+        {
+            do
+            {
+                Product c = new Product();
+                Console.WriteLine("---------------------------------------------");
+                Console.WriteLine("Entering Product Details:");
+                Console.WriteLine("---------------------------------------------");
+                Console.Write("Enter Product Name: ");
+                c.Name = Console.ReadLine();
+                Console.Write("Enter Product Price: ");
+                c.Price = int.Parse(Console.ReadLine());
+                list.AddObj(c);
+                Console.Write("Press 1 To Continue;0 To Quit:\t");
+                a = Convert.ToInt32(Console.ReadLine());
+            } while (a == 1);
+        }
+        public void View()
+        {
+            Console.WriteLine("\n---------------------------------------------");
+            Console.WriteLine("Product Details");
+            Console.WriteLine("---------------------------------------------");
+            foreach (Product obj in list)
+            {
+                Console.WriteLine("Product Name: {0}", obj.Name);
+                Console.WriteLine("Product Price: {0}", obj.Price);
+            }
+        }
+    }
+}
