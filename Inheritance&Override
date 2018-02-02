@@ -1,0 +1,92 @@
+//base abstract class employee
+//variables - employee no, nname, basic salary
+
+//  calculate salary abstract method
+//basic+hra+da-pf
+//basic+hra-pf
+
+
+//derived classes full time employee and part time employee
+
+//basic,hra da pf -FT
+//basic, hra,pf- PT
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+namespace Inheritance
+{
+    public abstract class Employee
+    {
+        public int eno;
+        public float basic;
+        public String ename;
+        public abstract float CalculateSalary();
+        public void GetDetails()
+        {
+            Console.Write("Enter Employee Number:\t");
+            eno = int.Parse(Console.ReadLine());
+            Console.Write("Enter Basic Salary:\t");
+            basic = float.Parse(Console.ReadLine());
+            Console.Write("Enter Employee Name:\t");
+            ename = Console.ReadLine();
+        }
+    }
+    class FullTimeEmployee : Employee
+    {
+        float hra, da, pf;
+        public void GetSalFull()
+        {
+            Console.Write("Enter House Rent Allowance:\t");
+            hra = float.Parse(Console.ReadLine());
+            Console.Write("Enter Dearness Allowance:\t");
+            da = float.Parse(Console.ReadLine());
+            Console.Write("Enter Provident Fund Contribution:\t");
+            pf = float.Parse(Console.ReadLine());
+        }
+        public override float CalculateSalary()
+        {
+            float sum;
+            sum = basic + hra + da - pf;
+            return sum;
+        }
+    }
+    class PartTimeEmployee : Employee
+    {
+        float hra, pf;
+        public void GetSalPart()
+        {
+            Console.Write("Enter House Rent Allowance:\t");
+            hra = float.Parse(Console.ReadLine());
+            Console.Write("Enter Provident Fund Contribution:\t");
+            pf = float.Parse(Console.ReadLine());
+        }
+        public override float CalculateSalary()
+        {
+            float sum;
+            sum = basic + hra - pf;
+            return sum;
+        }
+    }
+    class Execute
+    {
+        static void Main(string[] args)
+        {
+            float part, full;
+            Console.WriteLine("----ENTERING DETAILS OF FULL TIME EMPLOYEE:----");
+            FullTimeEmployee obj1 = new FullTimeEmployee();
+            obj1.GetDetails();
+            obj1.GetSalFull();
+            full = obj1.CalculateSalary();
+            Console.WriteLine("Salary of Full Time Employee is: " + full);
+            Console.WriteLine("----ENTERING DETAILS OF PART TIME EMPLOYEE:----");
+            PartTimeEmployee obj2 = new PartTimeEmployee();
+            obj2.GetDetails();
+            obj2.GetSalPart();
+            part = obj2.CalculateSalary();
+            Console.WriteLine("Salary of Part Time Employee is: " + part);
+        }
+    }
+}
