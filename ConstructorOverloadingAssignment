@@ -1,0 +1,87 @@
+//Constructer Overloading
+
+//Create a class Employee.
+//i.Eno, Name
+//ii.Eno, Name, BasicSalary
+//iii. Eno, Name, basicSalary, hra
+//iv. Eno, Name, basicSalary, hra, da
+//v. Eno, Name, basicSalary, hra, da, pf
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Day3
+{
+    class Employee
+    {
+        int Eno = 0, BasicSalary = 0, hra = 0, da = 0, pf = 0;
+        String Name;
+        public Employee()
+        {
+
+        }
+        public Employee(int Eno, String Name)
+        {
+            this.Eno = Eno;
+            this.Name = Name;
+        }
+        public Employee(int Eno, String Name, int BasicSalary)
+        {
+            this.Eno = Eno;
+            this.Name = Name;
+            this.BasicSalary = BasicSalary;
+        }
+        public Employee(int Eno, String Name, int BasicSalary, int hra)
+        {
+            this.Eno = Eno;
+            this.Name = Name;
+            this.BasicSalary = BasicSalary;
+            this.hra = hra;
+        }
+        public Employee(int Eno, String Name, int BasicSalary, int hra, int da)
+        {
+            this.Eno = Eno;
+            this.Name = Name;
+            this.BasicSalary = BasicSalary;
+            this.hra = hra;
+            this.da = da;
+        }
+        public Employee(int Eno, String Name, int BasicSalary, int hra, int da, int pf)
+        {
+            this.Eno = Eno;
+            this.Name = Name;
+            this.BasicSalary = BasicSalary;
+            this.hra = hra;
+            this.da = da;
+            this.pf = pf;
+        }
+        public void Display()
+        {
+            Console.WriteLine("----------------------------------------------------------");
+            Console.WriteLine("Employee Number : " + Eno);
+            Console.WriteLine("Employee Name : " + Name);
+            Console.WriteLine("Basic Salary : " + BasicSalary);
+            Console.WriteLine("House Rent Allowance : " + hra);
+            Console.WriteLine("Dearness Allowance : " + da);
+            Console.WriteLine("Provident Fund : " + pf);
+        }
+        static void Main(string[] args)
+        {
+            Employee obj1 = new Employee(100, "Sayan");
+            obj1.Display();
+            Employee obj2 = new Employee(100, "Sayan", 24000);
+            obj2.Display();
+            Employee obj3 = new Employee(100, "Sayan", 24000, 7500);
+            obj3.Display();
+            Employee obj4 = new Employee(100, "Sayan", 24000, 7500, 1000);
+            obj4.Display();
+            Employee obj5 = new Employee(100, "Sayan", 24000, 7500, 1000, 2500);
+            obj5.Display();
+            Console.ReadKey(false);
+        }
+    }
+}
