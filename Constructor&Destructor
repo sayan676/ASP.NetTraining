@@ -1,0 +1,49 @@
+using System;
+
+namespace Inheritance
+{
+    public class classA
+    {
+        public classA()
+        {
+            Console.WriteLine("Class A Default Constructor.");
+        }
+        public classA(int a)
+        {
+            Console.WriteLine("Class A Constructor : " + a);
+        }
+        ~classA()
+        {
+            Console.WriteLine("Class A Destructor.");
+        }
+    }
+    public class classB : classA
+    {
+        public classB() : base(10)
+        {
+            Console.WriteLine("Class B Constructor.");
+        }
+        ~classB()
+        {
+            Console.WriteLine("Class B Destructor.");
+        }
+    }
+    public class classC : classB
+    {
+        public classC()
+        {
+            Console.WriteLine("Class C Constructor.");
+        }
+        ~classC()
+        {
+            Console.WriteLine("Class C Destructor.");
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            classC obj = new classC();
+        }
+    }
+}
