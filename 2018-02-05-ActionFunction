@@ -1,0 +1,33 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+namespace linq
+{
+    class Ex
+    {
+        public void Message(string s)
+        {
+            Console.WriteLine("Welcome, " + s);
+        }
+        static void Main(string[] args)
+        {
+            Ex e = new Ex();
+            Action<string> obj = e.Message;
+            obj("Lokesh");
+            //In function there is no return type
+            Action<int, int> add = (x, y) =>
+               {
+                   Console.WriteLine(x + y);
+               };
+            add(10, 30);
+            //In function the last parameter is the return type
+            Func<int, int, int> add1 = (x, y) =>
+                {
+                    return x + y;
+                };
+            int res = add1(20, 30);
+        }
+    }
+}
