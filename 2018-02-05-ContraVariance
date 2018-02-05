@@ -1,0 +1,28 @@
+using System;
+
+namespace linq
+{
+    class ContraVariance
+    {
+        class Parent
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public void Print(Parent p)
+            {
+                Console.WriteLine(p.ID + "\t" + p.Name);
+            }
+        }
+        class Child:Parent
+        { }
+        static void Main(string[] args)
+        {
+            Parent p1 = new Parent();
+            Child c1 = new Child();
+            c1.ID = 1;
+            c1.Name = "Pradeep";
+            Action<Child> child = p1.Print;
+            child(c1);
+        }
+    }
+}
