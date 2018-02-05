@@ -33,6 +33,7 @@ namespace linq
             p.Add(new Product { ID = 4, Name = "Laptop", Price = 45000, Qty = 5 });
             var q = from ord in o
                     join prod in p on ord.ProdId equals prod.ID
+                    where prod.Price>5000
                     select new
                     {
                         ProdID = ord.ProdId,
