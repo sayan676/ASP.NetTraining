@@ -1,0 +1,76 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace linq
+{
+    class Program
+    {
+        class Emp
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public int Salary { get; set; }
+        }
+        class Project
+        {
+            public int ProjectID { get; set; }
+            public string ProjectName { get; set; }
+            public int EmpID { get; set; }
+        }
+        static void Main(string[] args)
+        {
+            //double[] salary = new double[] { 1000, 2000, 3000, 6000, 9000, 7000 };
+            //var q = from obj in salary
+            //        where obj > 5000
+            //        select obj;
+            //foreach (var k in q)
+            //{
+            //    Console.WriteLine(k);
+            //}
+            ////List
+            //List<double> sal = new List<double> { 500, 600, 700, 900, 550, 650 };
+            //var a = from obj in sal
+            //        where obj > 600
+            //        select obj;
+            //foreach (var k in a)
+            //{
+            //    Console.WriteLine(k);
+            //}
+            //Join Operation
+            List<Emp> l1 = new List<Emp>();
+            l1.Add(new Emp { ID = 1, Name = "A", Salary = 55000 });
+            l1.Add(new Emp { ID = 2, Name = "AA", Salary = 35000 });
+            l1.Add(new Emp { ID = 3, Name = "BA", Salary = 65000 });
+            l1.Add(new Emp { ID = 4, Name = "DA", Salary = 52000 });
+            l1.Add(new Emp { ID = 5, Name = "EA", Salary = 72000 });
+            List<Project> l2 = new List<Project>();
+            l2.Add(new Project { ProjectID = 1, ProjectName = "SAP", EmpID = 1 });
+            l2.Add(new Project { ProjectID = 2, ProjectName = "Shell", EmpID = 3 });
+            l2.Add(new Project { ProjectID = 3, ProjectName = "SAP", EmpID = 2 });
+            l2.Add(new Project { ProjectID = 4, ProjectName = "SAP", EmpID = 4 });
+            l2.Add(new Project { ProjectID = 5, ProjectName = "Shell", EmpID = 5 });
+            //var m = from obj in l1
+            //        where obj.Salary > 50000
+            //        where obj.Name.StartsWith("A")
+            //        orderby obj.Name ascending
+            //        select obj;
+            //foreach (var k in m)
+            //{
+            //    Console.WriteLine(k.ID + "\t" + k.Name + "\t" + k.Salary);
+            //}
+            var l = from emp in l1
+                    join prj in l2 on emp.ID equals prj.EmpID
+                    select new
+                    {
+                        EmpName = emp.Name,
+                        ProjectName = prj.ProjectName,
+                        EmpSalary = emp.Salary
+                    };
+            foreach (var k in l)
+            {
+                Console.WriteLine(k.EmpName + "\t" + k.ProjectName + "\t" + k.EmpSalary);
+            }
+        }
+    }
+}
