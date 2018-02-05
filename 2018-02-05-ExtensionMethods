@@ -1,0 +1,32 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace linq
+{
+    public static class extension
+    {
+        public static string Welcome(this string str)
+        //Only string variables can call this method.
+        {
+            return "Welcome, " + str;
+        }
+        public static int WordCount(this string s)
+        {
+            return s.Split(',','.',' ').Length;
+        }
+    }
+    public class Test
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Enter User ID:\t");
+            string uid = Console.ReadLine();
+            Console.WriteLine(uid.Welcome());
+            string msg = "Welcome to chennai.Hell,o";
+            Console.WriteLine("Length : "+msg.WordCount());
+        }
+    }
+}
