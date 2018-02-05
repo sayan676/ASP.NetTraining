@@ -1,0 +1,52 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace linq
+{
+    class AssignmentProductOrder
+    {
+        class Order
+        {
+            public int OrderID { get; set; }
+            public int ProdId { get; set; }
+            public DateTime OrderDate { get; set; }
+        }
+        class Product
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public int Price { get; set; }
+            public int Qty { get; set; }
+        }
+        static void Main(string[] args)
+        {
+            List<Order> o = new List<Order>();
+            o.Add(new Order { OrderID = 1, ProdId = 1, OrderDate = new DateTime(2017, 02, 28) });
+            o.Add(new Order { OrderID = 2, ProdId = 2, OrderDate = new DateTime(2017, 05, 01) });
+            o.Add(new Order { OrderID = 3, ProdId = 3, OrderDate = new DateTime(2017, 09, 15) });
+            o.Add(new Order { OrderID = 4, ProdId = 4, OrderDate = new DateTime(2017, 01, 22) });
+            List<Product> p = new List<Product>();
+            p.Add(new Product { ID = 1, Name = "Phone", Price = 15000, Qty = 10 });
+            p.Add(new Product { ID = 2, Name = "Tab", Price = 9000, Qty = 15 });
+            p.Add(new Product { ID = 3, Name = "Sim", Price = 10, Qty = 20 });
+            p.Add(new Product { ID = 4, Name = "Laptop", Price = 45000, Qty = 5 });
+            var q = from ord in o
+                    join prod in p on ord.ProdId equals prod.ID
+                    select new
+                    {
+                        ProdID = ord.ProdId,
+                        ProdName=prod.Name,
+                        Price=prod.Price,
+                        Quantity=prod.Qty,
+                        OrderDate=ord.OrderDate
+                    };
+            foreach(var m in q)
+            {
+                Console.WriteLine(m.ProdID+"\t"+m.ProdName+"\t"+m.Price+"\t"+m.Quantity+"\t"+m.OrderDate);
+            }
+
+
+        }
+    }
+}
