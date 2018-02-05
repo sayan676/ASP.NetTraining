@@ -1,0 +1,52 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace linq
+{
+    class Linqgroup
+    {
+        class Emp
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public int Salary { get; set; }
+        }
+        class Project
+        {
+            public int ProjectID { get; set; }
+            public string ProjectName { get; set; }
+            public int EmpID { get; set; }
+        }
+        static void Main(string[] args)
+        {
+            List<Emp> l1 = new List<Emp>();
+            l1.Add(new Emp { ID = 1, Name = "A", Salary = 55000 });
+            l1.Add(new Emp { ID = 2, Name = "AA", Salary = 35000 });
+            l1.Add(new Emp { ID = 3, Name = "BA", Salary = 65000 });
+            l1.Add(new Emp { ID = 4, Name = "DA", Salary = 52000 });
+            l1.Add(new Emp { ID = 5, Name = "EA", Salary = 72000 });
+            List<Project> l2 = new List<Project>();
+            l2.Add(new Project { ProjectID = 1, ProjectName = "SAP", EmpID = 1 });
+            l2.Add(new Project { ProjectID = 2, ProjectName = "Shell", EmpID = 3 });
+            l2.Add(new Project { ProjectID = 3, ProjectName = "SAP", EmpID = 2 });
+            l2.Add(new Project { ProjectID = 4, ProjectName = "SAP", EmpID = 4 });
+            l2.Add(new Project { ProjectID = 5, ProjectName = "Shell", EmpID = 5 });
+            var q = from obj in l2
+                    group obj.ProjectID by obj.ProjectName into grp
+                    select new
+                    {
+                        ProjectName = grp.Key,
+                        ProjectID = grp.Count()
+                    };
+            foreach(var k in q)
+            {
+                Console.WriteLine(k.ProjectName + "\t" + k.ProjectID);
+                //foreach(var a in k.ProjectID)
+                //{
+                //    Console.WriteLine(a);
+                //}
+            }
+        }
+    }
+}
