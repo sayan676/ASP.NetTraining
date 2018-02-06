@@ -18,26 +18,42 @@ namespace WindowsFormsApplication1
             InitializeComponent();
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private void frmDatabase_Load(object sender, EventArgs e)
         {
+            //SqlConnection con = new SqlConnection("Data Source= CGI-JDN-01\\CGI;Initial Catalog=CGI;Integrated Security=true");
+            //SqlCommand cmd = new SqlCommand("Select * from CustomerDetails",con);
+            //if (con.State == ConnectionState.Closed)
+            //    con.Open();
+            //SqlDataReader rdr = cmd.ExecuteReader();
+            //rdr.Read();
+            //txtCustID.Text = rdr["CustomerID"].ToString();
+            //txtCustName.Text = rdr["CustomerName"].ToString();
+            //txtCity.Text = rdr["City"].ToString();
+            //txtMobileNo.Text = rdr["MobileNo"].ToString();
+            //rdr.Close();
+            //con.Close();
 
         }
 
-        private void frmDatabase_Load(object sender, EventArgs e)
+        private void btnSubmit_Click(object sender, EventArgs e)
         {
             SqlConnection con = new SqlConnection("Data Source= CGI-JDN-01\\CGI;Initial Catalog=CGI;Integrated Security=true");
-            SqlCommand cmd = new SqlCommand("Select * from CustomerDetails",con);
+            SqlCommand cmd = new SqlCommand("Select * from CustomerDetails where CustomerID=@CustomerID", con);
+            cmd.Parameters.AddWithValue("@CustomerID", txtCustID.Text);
             if (con.State == ConnectionState.Closed)
                 con.Open();
             SqlDataReader rdr = cmd.ExecuteReader();
-            rdr.Read();
-            txtCustID.Text = rdr["CustomerID"].ToString();
-            txtCustName.Text = rdr["CustomerName"].ToString();
-            txtCity.Text = rdr["City"].ToString();
-            txtMobileNo.Text = rdr["MobileNo"].ToString();
+            if (rdr.HasRows)
+            {
+                rdr.Read();
+                txtCustName.Text = rdr["CustomerName"].ToString();
+                txtCity.Text = rdr["City"].ToString();
+                txtMobileNo.Text = rdr["MobileNo"].ToString();
+            }
+            else
+                MessageBox.Show("No Record");
             rdr.Close();
             con.Close();
-
         }
     }
 }
