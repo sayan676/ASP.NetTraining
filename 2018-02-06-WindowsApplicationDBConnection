@@ -1,0 +1,43 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Data.SqlClient;
+
+namespace WindowsFormsApplication1
+{
+    public partial class frmDatabase : Form
+    {
+        public frmDatabase()
+        {
+            InitializeComponent();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void frmDatabase_Load(object sender, EventArgs e)
+        {
+            SqlConnection con = new SqlConnection("Data Source= CGI-JDN-01\\CGI;Initial Catalog=CGI;Integrated Security=true");
+            SqlCommand cmd = new SqlCommand("Select * from CustomerDetails",con);
+            if (con.State == ConnectionState.Closed)
+                con.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+            rdr.Read();
+            txtCustID.Text = rdr["CustomerID"].ToString();
+            txtCustName.Text = rdr["CustomerName"].ToString();
+            txtCity.Text = rdr["City"].ToString();
+            txtMobileNo.Text = rdr["MobileNo"].ToString();
+            rdr.Close();
+            con.Close();
+
+        }
+    }
+}
