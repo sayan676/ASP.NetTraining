@@ -1,0 +1,29 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data.SqlClient;
+namespace ConsoleDatabase
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = "Data Source=CGI-JDN-01\\CGI;Initial Catalog=CGI;Integrated Security=true";
+            con.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "Select * from CustomerDetails";
+            cmd.Connection = con;
+            SqlDataReader dr = cmd.ExecuteReader();
+            while(dr.Read())
+            {
+                Console.WriteLine("Customer ID:"+dr[0].ToString());
+                Console.WriteLine("Customer Name:"+dr["CustomerName"].ToString());
+            }
+            dr.Close();
+            con.Close();
+        }
+    }
+}
