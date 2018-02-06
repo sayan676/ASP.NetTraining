@@ -1,0 +1,43 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WindowsFormsApplication1
+{
+    public partial class frmAddingData : Form
+    {
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["CGICon"].ConnectionString);
+        public frmAddingData()
+        {
+            InitializeComponent();
+        }
+
+        private void btnSubmit_Click(object sender, EventArgs e)
+        {
+            if (con.State == ConnectionState.Closed)
+                con.Open();
+            SqlCommand cmd = new SqlCommand("uspInsCustDetails", con);
+            cmd.CommandType = CommandType.StoredProcedure;//Stored Procedure
+            cmd.Parameters.AddWithValue("@CustomerID", txtCustID.Text);
+            cmd.Parameters.AddWithValue("@CustomerName", txtCustName.Text);
+            cmd.Parameters.AddWithValue("@MobileNo", txtMobileNo.Text);
+            cmd.Parameters.AddWithValue("@City", txtCity.Text);
+            cmd.Parameters.AddWithValue("@EmailID", txtEmailID.Text);
+            cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
+            cmd.Parameters.AddWithValue("@PinCode", txtPinCode.Text);
+            int result = cmd.ExecuteNonQuery();//DML Operation
+            if (result > 0)
+            {
+                MessageBox.Show("Record added successfully.");
+            }
+        }
+    }
+}
