@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace WindowsFormsApplication1
 {
@@ -20,7 +21,7 @@ namespace WindowsFormsApplication1
 
         private void frmDatabase_Load(object sender, EventArgs e)
         {
-            //SqlConnection con = new SqlConnection("Data Source= CGI-JDN-01\\CGI;Initial Catalog=CGI;Integrated Security=true");
+            //SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["CGICon"].ConnectionString);
             //SqlCommand cmd = new SqlCommand("Select * from CustomerDetails",con);
             //if (con.State == ConnectionState.Closed)
             //    con.Open();
@@ -37,7 +38,7 @@ namespace WindowsFormsApplication1
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            SqlConnection con = new SqlConnection("Data Source= CGI-JDN-01\\CGI;Initial Catalog=CGI;Integrated Security=true");
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["CGICon"].ConnectionString);
             SqlCommand cmd = new SqlCommand("Select * from CustomerDetails where CustomerID=@CustomerID", con);
             cmd.Parameters.AddWithValue("@CustomerID", txtCustID.Text);
             if (con.State == ConnectionState.Closed)
@@ -57,3 +58,16 @@ namespace WindowsFormsApplication1
         }
     }
 }
+
+--------------------------------------------------------------------------------------------------------------------------------
+app.config
+
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <connectionStrings>
+    <add name="CGICon" connectionString="Data Source= CGI-JDN-01\CGI;Initial Catalog=CGI;Integrated Security=true"/>
+  </connectionStrings>
+    <startup> 
+        <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5.2" />
+    </startup>
+</configuration>
