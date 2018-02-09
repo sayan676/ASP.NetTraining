@@ -1,0 +1,100 @@
+//Right click application name>Add new item>Data>ADO .NET Entity data model(for LINQ to SQL) .edmx file
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace frmEntityFramework
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+        public void BindGrid()
+        {
+            CGIEntities obj = new CGIEntities();
+            var query= from customer in obj.CustomerDetails
+                           //select customer;
+                       select new
+                       {
+                           CustomerID = customer.CustomerID,
+                           Email = customer.EmailID,
+                       };
+            dataGridView1.DataSource = query.ToList();
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.BindGrid();
+        }
+        //RETRIEVE BUTTON
+        private void cmdGet_Click(object sender, EventArgs e)
+        {
+            CGIEntities obj = new CGIEntities();
+            var query = (from cust in obj.CustomerDetails
+                         where cust.CustomerID==txtCustomerID.Text
+                         select cust).SingleOrDefault();
+            if(query!=null)
+            {
+                txtCustomerID.Text = query.CustomerID;
+                txtEmailID.Text = query.EmailID;
+            }
+            else
+            {
+                MessageBox.Show("Customer ID Not Found");
+            }
+        }
+        //INSERT BUTTON
+        private void cmdInsert_Click(object sender, EventArgs e)
+        {
+            //POCO
+            CGIEntities obj = new CGIEntities();
+            CustomerDetail cd = new CustomerDetail();
+            cd.CustomerID = txtCustomerID.Text;
+            cd.EmailID = txtEmailID.Text;
+            obj.CustomerDetails.Add(cd);
+            int res = obj.SaveChanges();
+            if (res > 0)
+            {
+                MessageBox.Show("Success");
+                BindGrid();
+            }
+        }
+        //UPDATE BUTTON
+        private void cmdUpdate_Click(object sender, EventArgs e)
+        {
+            CGIEntities obj = new CGIEntities();
+            CustomerDetail cd = new CustomerDetail();
+            cd = obj.CustomerDetails.Find(txtCustomerID.Text);
+            cd.EmailID = txtEmailID.Text;
+            int res = obj.SaveChanges();
+            if (res>0)
+            {
+                MessageBox.Show("Success");
+                BindGrid();
+            }
+        }
+        //DELETE BUTTON
+        private void cmdDelete_Click(object sender, EventArgs e)
+        {
+            CGIEntities obj = new CGIEntities();
+            CustomerDetail cd = new CustomerDetail();
+            cd = obj.CustomerDetails.Find(txtCustomerID.Text);
+            obj.CustomerDetails.Remove(cd);//to delete
+            int res = obj.SaveChanges();//to update database
+            if(res>0)
+            {
+                MessageBox.Show("Record Deleted");
+                BindGrid();
+            }
+        }
+
+    }
+}
