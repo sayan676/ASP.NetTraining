@@ -1,0 +1,61 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace Customer.DAL
+{
+    class CustomerDetails
+    {
+        public int SaveCustomer(string CustomerID, string EmailID)
+        {
+            SqlConnection con = new SqlConnection("Data Source=CGI-JDN-01\\CGI;Initial Catalog=ANI;Integrated Security=true;");
+            SqlDataAdapter da = new SqlDataAdapter("Select * from CustomerDetails", con);
+            SqlCommandBuilder obj = new SqlCommandBuilder(da);
+            DataSet ds = new DataSet();
+            da.Fill(ds, "Cust");
+            DataRow dr = ds.Tables["Cust"].NewRow();
+            dr["CustomerID"] = CustomerID;
+            dr["emailid"] = EmailID;
+            ds.Tables["Cust"].Rows.Add(dr);
+            int r = da.Update(ds, "Cust");
+            return r;
+        }
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Customer.DAL;
+
+namespace Customer
+{
+    public partial class Form2 : Form
+    {
+        public Form2()
+        {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            CustomerDetails obj = new CustomerDetails();
+            int res = obj.SaveCustomer(txtCustomerId.Text, textBox2.Text);
+            if (res > 0)
+            {
+                MessageBox.Show("Success");
+            }
+        }
+    }
+}
