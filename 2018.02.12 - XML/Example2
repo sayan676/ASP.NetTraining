@@ -1,0 +1,55 @@
+create a root element product details
+parent element product with product id (prxxxx) as attribute
+name, description, price(<50000), quantity(>=0 & <50) are elements
+
+<?xml version="1.0" encoding="utf-8" ?>
+<PRODUCTDETAILS>
+  <PRODUCT ID="PR0001">
+    <NAME>SAYAN</NAME>
+    <DESCIPTION>NOTHING</DESCIPTION>
+    <PRICE>50000</PRICE>
+    <QUANTITY>49</QUANTITY>
+  </PRODUCT>
+</PRODUCTDETAILS>
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="PRODUCTDETAILS">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PRODUCT">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NAME" type="xs:string" />
+              <xs:element name="DESCIPTION" type="xs:string" />
+              <xs:element name="PRICE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:positiveInteger">
+                    <xs:maxInclusive value="50000"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="QUANTITY">
+                <xs:simpleType>
+                  <xs:restriction base="xs:positiveInteger">
+                    <xs:minInclusive value="1"/>
+                    <xs:maxExclusive value="50"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="ID" use="required">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:pattern value="[PR]{2}\d{4}"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
