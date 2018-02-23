@@ -1,0 +1,26 @@
+<div class=".container">
+  <form>
+    <div class="form-group">
+      <label for="txtProductName">Product Name</label>
+      <input required ngModel type="text" #productName="ngModel" name="txtProductName" id="txtProductName" class="form-control">
+      <div class="alert alert-danger" *ngIf="productName.touched && !productName.valid">Name is required</div>
+      <!-- To let system know it is a angular control use ngModel -->
+    </div>
+    <div class="form-group">
+      <label for="txtPrice">Price</label>
+      <input required ngModel type="text" #productPrice="ngModel" name="txtPrice" id="txtPrice" class="form-control">
+      <div class="alert alert-danger"  *ngIf="productPrice.touched && !productPrice.valid">Price is required</div>
+    </div>
+    <div class="form-group">
+      <label for="txtQuantity">Quantity</label>
+      <input required ngModel type="text" #productQuantity="ngModel" name="txtQuantity" id="txtQuantity" class="form-control">
+      <div class="alert alert-danger"  *ngIf="productQuantity.touched && !productQuantity.valid">Quantity is required</div>
+    </div>
+    <div class="form-group">
+      <label for="txtRating">Rating</label>
+      <input required ngModel type="text" #productRating="ngModel" name="txtRating" id="txtRating" class="form-control">
+      <div class="alert alert-danger"  *ngIf="productRating.touched && !productRating.valid">Rating is required</div>
+    </div>
+    <button class="btn btn-primary btn-lg btn-block">Submit</button>
+  </form>
+</div>
