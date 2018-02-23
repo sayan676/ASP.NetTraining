@@ -1,0 +1,44 @@
+<h2>{{title}}</h2>
+<div *ngIf="product.length>0; then productData else noProduct"></div>
+<ng-template #productData>
+  <div *ngFor="let prd of product">
+    <!-- <div- *ngFor="let prd of product"> -->
+    <table>
+      <tr>
+        <th>Product Name</th>
+        <td>{{prd.name|uppercase}}</td>
+      </tr>
+      <tr>
+        <th>Product Price</th>
+        <td>{{prd.price|currency:'INR'}}</td>
+      </tr>
+      <tr>
+        <th>Product Quantity</th>
+        <td>{{prd.quantity|number}}</td>
+      </tr>
+      <tr>
+        <th>Product Rating</th>
+        <td>{{prd.rating|number:'1.1-2'}}</td>
+      </tr>
+      <tr>
+        <th>Product Release Date</th>
+        <td>{{prd.releaseDate|date:'dd-MM-yyyy'}}</td>
+      </tr>
+    </table>
+  </div>
+</ng-template>
+<ng-template #noProduct>
+  <!-- <div *ngIf="product.length==0"></div> -->
+  No Product Available
+</ng-template>
+--------------------------------------------------------------------------------------------------------------------
+.ts file
+
+  title = 'Product Information';
+  product = [{
+    name: 'Mobile Phone',
+    price: 14999.987,
+    quantity: 12800,
+    rating: 4.336721,
+    releaseDate: new Date(2018, 1, 22)
+  }];
