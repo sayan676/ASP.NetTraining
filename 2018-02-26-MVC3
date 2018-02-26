@@ -1,0 +1,103 @@
+ProductsController.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using MVCApplication1.Models;
+using MVCApplication1.ViewModel;
+
+namespace MVCApplication1.Controllers
+{
+    public class ProductsController : Controller
+    {
+        public ActionResult Index()
+        {
+            CustomerProductViewModel viewModel = new CustomerProductViewModel();
+            viewModel.CustomerName = "Sayan";
+            viewModel.GetProducts = this.GetProducts();
+            return View(viewModel);
+        }
+        public List<Products> GetProducts()
+        {
+            return new List<Products>
+            {
+                new Products { ProductID=1,ProductName="Television",Price=29999,Quantity=10 },
+                new Products { ProductID=2,ProductName="Phone",Price=9999,Quantity=20 },
+                new Products { ProductID=3,ProductName="Washing Machine",Price=23999,Quantity=15 },
+                new Products { ProductID=4,ProductName="Air Conditioner",Price=30000,Quantity=5 },
+                new Products { ProductID=5,ProductName="Watch",Price=2000,Quantity=100 }
+            };
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------------
+Products.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace MVCApplication1.Models
+{
+    //POCO - Plain old CLR object
+    public class Products
+    {
+        public int ProductID { get; set; }
+        public string ProductName { get; set; }
+        public double Price { get; set; }
+        public int Quantity { get; set; }
+    }
+}
+
+--------------------------------------------------------------------------------------------------------------------------------
+Index.cshtml
+
+@model MVCApplication1.ViewModel.CustomerProductViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customer Viewed Products</h2>
+
+<b>@Model.CustomerName</b>
+
+<table class="table table-responsive">
+    <tr>
+        <th>Product ID</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+    </tr>
+    @foreach (var product in Model.GetProducts)
+    {
+        <tr>
+            <th>@product.ProductID</th>
+            <th>@product.ProductName</th>
+            <th>@product.Price</th>
+            <th>@product.Quantity</th>
+        </tr>
+    }
+</table>
+
+------------------------------------------------------------------------------------------------------------------------------
+
+Create ViewModel folder; Create a new class CustomerProductViewModel
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using MVCApplication1.Models;
+
+namespace MVCApplication1.ViewModel
+{
+    public class CustomerProductViewModel
+    {
+        public string CustomerName { get; set; }
+        public List<Products> GetProducts { get; set; }
+    }
+}
