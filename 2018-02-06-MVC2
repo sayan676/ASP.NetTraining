@@ -1,0 +1,77 @@
+Index.cshtml
+
+@using MVCApplication1.Models
+@model List<Products>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Product Details</h2>
+<table class="table table-responsive">
+    <tr>
+        <th>Product ID</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+    </tr>
+    @foreach (var product in Model.ToList())
+    {
+        <tr>
+            <th>@product.ProductID</th>
+            <th>@product.ProductName</th>
+            <th>@product.Price</th>
+            <th>@product.Quantity</th>
+        </tr>
+    }
+</table>
+--------------------------------------------------------------------------------------------------------------------------------
+ProductsController.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using MVCApplication1.Models;
+
+namespace MVCApplication1.Controllers
+{
+    public class ProductsController : Controller
+    {
+        public ActionResult Index()
+        {
+            var product = GetProducts();
+            return View(product);
+        }
+        public List<Products> GetProducts()
+        {
+            return new List<Products>
+            {
+                new Products { ProductID=1,ProductName="Television",Price=29999,Quantity=10 },
+                new Products { ProductID=2,ProductName="Phone",Price=9999,Quantity=20 },
+                new Products { ProductID=3,ProductName="Washing Machine",Price=23999,Quantity=15 },
+                new Products { ProductID=4,ProductName="Air Conditioner",Price=30000,Quantity=5 },
+                new Products { ProductID=5,ProductName="Watch",Price=2000,Quantity=100 }
+            };
+        }
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------
+Products.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace MVCApplication1.Models
+{
+    //POCO - Plain old CLR object
+    public class Products
+    {
+        public int ProductID { get; set; }
+        public string ProductName { get; set; }
+        public double Price { get; set; }
+        public int Quantity { get; set; }
+    }
+}
