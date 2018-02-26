@@ -1,0 +1,89 @@
+ProductsController.cs
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace MVCApplication1.Controllers
+{
+    [RoutePrefix("ProductDetails")] //global
+    [Route("{action=Index}")] //default route
+    public class ProductsController : Controller
+    {
+        // GET: Products
+        public ActionResult Index()
+        {
+            return Content("Default Route");
+            //return View();
+        }
+        //mvcaction4->tab creates action method
+        
+        ////Products/Test
+        //[Route("Products/Details/{id?}/{name?}")] //The ? represents the value is optional
+        public ActionResult Test(int? id, string name) //The ? represents it is nullable
+        {
+            if (!id.HasValue)
+                id = 100000;
+
+            if (string.IsNullOrEmpty(name))
+                name = "No Products";
+
+            if (id == 0)
+                return HttpNotFound();
+            else
+                return Content(string.Format("Product ID : {0} <br/> Name : {1}", id, name));
+                //return Content("ID: " + productid + "<br/> Name: " + name);
+            //return View();
+        }
+        //public ActionResult Test(/*int id*/)
+        //{
+        //return new EmptyResult(); //1
+        //return Redirect("http://www.google.com"); //2
+        //if (id == 0) //3
+        //    return HttpNotFound();
+        //else
+        //    return Content("Product Id:" + id);
+        //return RedirectToAction("About", "Home"); //4 First is action name,second is controller name
+        //}
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------
+
+App_Start>Routes.config
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+
+namespace MVCApplication1
+{
+    public class RouteConfig
+    {
+        public static void RegisterRoutes(RouteCollection routes)
+        {
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapMvcAttributeRoutes();
+
+            ////user defined route
+            //routes.MapRoute(
+            //    "ProductDetails",
+            //    "Products/Details/{productid}/{name}",
+            //    new { controller = "Products", action = "Test", productid = UrlParameter.Optional, name = UrlParameter.Optional }
+            //);
+            //general route
+            //routes.MapRoute(
+            //    name: "Default",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            //);
+        }
+    }
+}
