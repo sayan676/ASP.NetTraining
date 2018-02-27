@@ -1,0 +1,121 @@
+MVCDAL.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Data.Entity;
+using MVCApplication1.Models;
+
+namespace MVCApplication1.DataAccessLayer
+{
+    public class MVCDAL : DbContext
+    {
+        public MVCDAL() : base("MVCCon")
+        {
+            //Database.SetInitializer<MVCDAL>(new DropCreateDatabaseIfModelChanges<MVCDAL>());
+        }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            //modelBuilder.Entity<Products>().ToTable("tblProduct");
+            //modelBuilder.Entity<Customer>().ToTable("tblCustomer");
+            base.OnModelCreating(modelBuilder);
+        }
+
+        public DbSet<Products> Product { get; set; }
+        public DbSet<Customer> Cust { get; set; }
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+CustomerController.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using MVCApplication1.Models;
+using MVCApplication1.ViewModel;
+using MVCApplication1.DataAccessLayer;
+
+namespace MVCApplication1.Controllers
+{
+    public class CustomerController : Controller
+    {
+        public ActionResult DisplayCustomers()
+        {
+            var customer = GetCustomers();
+            return View(customer);
+        }
+        // GET: Customer
+        public ActionResult CustomerView()
+        {
+            CustomerProductViewModel viewModel = new CustomerProductViewModel();
+            viewModel.CustomerName = "Sayan";
+            viewModel.GetCustomers = this.GetCustomers();
+            return View(viewModel);
+        }
+        public List<Customer> GetCustomers()
+        {
+            MVCDAL dal = new MVCDAL();
+            return dal.Cust.ToList();
+        }
+        public ActionResult SearchCustomer(int id)
+        {
+            var customer = GetCustomers().SingleOrDefault(p => p.CustomerID == id);
+            if (customer == null)
+                return HttpNotFound();
+            else
+                return View(customer);
+        }
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------------
+DisplayCustomers.cshtml
+
+@using MVCApplication1.Models;
+@model List<Customer>
+@{
+    ViewBag.Title = "DisplayCustomers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customers</h2>
+
+<ul>
+    @foreach (var cust in Model.ToList())
+    {
+        <li>
+            @Html.ActionLink(cust.CustomerName, "SearchCustomer", "Customer", new { id = cust.CustomerID }, new { @class = ".alert-link" })
+        </li>
+    }
+</ul>
+
+---------------------------------------------------------------------------------------------------------------------------------
+SearchCustomer.cshtml
+
+@model  MVCApplication1.Models.Customer
+@{
+    ViewBag.Title = "SearchCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Search Result</h2>
+
+<table class="table-responsive">
+    <tr>
+        <th>Customer ID</th>
+        <th>Name</th>
+        <th>City</th>
+        <th>Mobile Number</th>
+    </tr>
+    <tr>
+        <td>@Model.CustomerID</td>
+        <td>@Model.CustomerName</td>
+        <td>@Model.City</td>
+        <td>@Model.MobileNo</td>
+    </tr>
+</table>
