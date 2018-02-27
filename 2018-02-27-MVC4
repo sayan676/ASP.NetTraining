@@ -119,3 +119,30 @@ SearchCustomer.cshtml
         <td>@Model.MobileNo</td>
     </tr>
 </table>
+
+--------------------------------------------------------------------------------------------------------------------------------
+Customer.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.ComponentModel.DataAnnotations;
+
+namespace MVCApplication1.Models
+{
+    public class Customer
+    {
+        [Key]
+        public int CustomerID { get; set; }
+        [Required]
+        [StringLength(100, MinimumLength = 3)]
+        public string CustomerName { get; set; }
+        [Required]
+        [StringLength(100, MinimumLength = 5)]
+        public string City { get; set; }
+        [Required]
+        [StringLength(10, MinimumLength = 10)]
+        public string MobileNo { get; set; }
+    }
+}
