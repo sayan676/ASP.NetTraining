@@ -1,0 +1,160 @@
+Controller>CustomerController.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using MVCApplication1.Models;
+using MVCApplication1.ViewModel;
+using MVCApplication1.DataAccessLayer;
+
+namespace MVCApplication1.Controllers
+{
+    public class CustomerController : Controller
+    {
+        public ActionResult DisplayCustomers()
+        {
+            var customer = GetCustomers();
+            return View(customer);
+        }
+        public ActionResult AddNew()
+        {
+            return View();
+        }
+        public ActionResult Save(Customer customer)
+        {
+            MVCDAL obj = new MVCDAL();
+            if (customer.CustomerID == 0)
+                obj.Cust.Add(customer);
+            else
+            {
+                var s = obj.Cust.Find(customer.CustomerID);
+                s.CustomerName = customer.CustomerName;
+                s.City = customer.City;
+                s.MobileNo = customer.MobileNo;
+            }
+            obj.SaveChanges();
+            return RedirectToAction("DisplayCustomers", "Customer");
+        }
+        // GET: Customer
+        public ActionResult CustomerView()
+        {
+            CustomerProductViewModel viewModel = new CustomerProductViewModel();
+            viewModel.CustomerName = "Sayan";
+            viewModel.GetCustomers = this.GetCustomers();
+            return View(viewModel);
+        }
+        public List<Customer> GetCustomers()
+        {
+            MVCDAL dal = new MVCDAL();
+            return dal.Cust.ToList();
+        }
+        public ActionResult Edit(int id)
+        {
+            var customer = GetCustomers().SingleOrDefault(p => p.CustomerID == id);
+            if (customer == null)
+                return HttpNotFound();
+            else
+                return View("AddNew",customer);
+        }
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+Models>Customer.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.ComponentModel.DataAnnotations;
+
+namespace MVCApplication1.Models
+{
+    public class Customer
+    {
+        [Key]
+        public int CustomerID { get; set; }
+        [Required]
+        [StringLength(100, MinimumLength = 3)]
+        [Display(Name = "Customer Name")]
+        public string CustomerName { get; set; }
+        [Required]
+        [StringLength(100, MinimumLength = 5)]
+        public string City { get; set; }
+        [Required]
+        [StringLength(10, MinimumLength = 10)]
+        [Display(Name = "Mobile Number")]
+        public string MobileNo { get; set; }
+    }
+}
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+Views>DisplayCustomer.cs
+
+@model MVCApplication1.ViewModel.CustomerProductViewModel
+@{
+    ViewBag.Title = "CustomerView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customers</h2>
+
+<b>@Model.CustomerName</b>
+
+<table class="table table-striped">
+    <tr>
+        <th>Customer ID</th>
+        <th>Customer Name</th>
+        <th>City</th>
+        <th>Mobile Number</th>
+    </tr>
+    @foreach (var customer in Model.GetCustomers)
+    {
+        <tr>
+            <th>@customer.CustomerID</th>
+            <th>@customer.CustomerName</th>
+            <th>@customer.City</th>
+            <th>@customer.MobileNo</th>
+        </tr>
+    }
+</table>
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+View>AddNew.cs
+
+@model MVCApplication1.Models.Customer
+@{
+    ViewBag.Title = "AddNew";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add New Customer</h2>
+
+@using (Html.BeginForm("Save", "Customer"))
+{
+    <div class="form-group">
+        @Html.LabelFor(s => s.CustomerName)
+        @Html.TextBoxFor(s => s.CustomerName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(s => s.City)
+        @Html.TextBoxFor(s => s.City, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(s => s.MobileNo)
+        @Html.TextBoxFor(s => s.MobileNo, new { @class = "form-control" })
+    </div>
+    <div>
+        @Html.HiddenFor(p => p.CustomerID)
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="reset" class="btn btn-danger">Reset</button>
+    </div>
+}
