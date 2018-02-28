@@ -1,0 +1,152 @@
+Controller>SupplierController.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using MVCApplication1.Models;
+using MVCApplication1.ViewModel;
+using MVCApplication1.DataAccessLayer;
+
+namespace MVCApplication1.Controllers
+{
+    public class SupplierController : Controller
+    {
+        // GET: Supplier
+        public ActionResult DisplaySuppliers()
+        {
+            var supplier = GetSuppliers();
+            return View(supplier);
+        }
+        public ActionResult AddNew()
+        {
+            return View();
+        }
+        public ActionResult Save(Supplier supplier)
+        {
+            MVCDAL obj = new MVCDAL();
+            if (supplier.SupplierID == 0)
+                obj.Supp.Add(supplier);
+            else
+            {
+                var s = obj.Supp.Find(supplier.SupplierID);
+                s.FirstName = supplier.FirstName;
+                s.LastName = supplier.LastName;
+                s.CompanyName = supplier.CompanyName;
+            }
+            obj.SaveChanges();
+            return RedirectToAction("DisplaySuppliers","Supplier");
+        }
+        public List<Supplier> GetSuppliers()
+        {
+            MVCDAL dal = new MVCDAL();
+            return dal.Supp.ToList();
+        }
+        public ActionResult Edit(int id)
+        {
+            var supplier = GetSuppliers().SingleOrDefault(p => p.SupplierID == id);
+            if (supplier == null)
+                return HttpNotFound();
+            else
+                return View("AddNew",supplier);
+        }
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------------
+Models>Supplier.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.ComponentModel.DataAnnotations;
+
+namespace MVCApplication1.Models
+{
+    public class Supplier
+    {
+        [Key]
+        public int SupplierID { get; set; }
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+        [Required]
+        [Display(Name = "Company Name")]
+        public string CompanyName { get; set; }
+    }
+}
+
+--------------------------------------------------------------------------------------------------------------------------------
+Views>AddNew.cshtml
+
+@model MVCApplication1.Models.Supplier
+@{
+    ViewBag.Title = "AddNew";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add New Supplier</h2>
+
+@using (Html.BeginForm("Save", "Supplier"))
+{
+    <div class="form-group">
+        @Html.LabelFor(s => s.FirstName)
+        @Html.TextBoxFor(s => s.FirstName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(s => s.LastName)
+        @Html.TextBoxFor(s => s.LastName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(s => s.CompanyName)
+        @Html.TextBoxFor(s => s.CompanyName, new { @class = "form-control" })
+    </div>
+    <div>
+        @Html.HiddenFor(p => p.SupplierID)
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="reset" class="btn btn-danger">Reset</button>
+    </div>
+}
+
+Views>DisplaySuppliers.cshtml
+
+@using MVCApplication1.Models
+@model List<Supplier>
+@{
+    ViewBag.Title = "DisplaySuppliers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+@Html.ActionLink("Create New Supplier", "AddNew", "Supplier")
+<br />
+<h2>Suppliers</h2>
+@if (!Model.Any())
+{
+    <span>No Supplier</span>
+}
+else
+{
+    <table class="table table-striped">
+        <tr>
+            <th>Supplier ID </th>
+            <th>First Name </th>
+            <th>Last Name</th>
+            <th>Company Name </th>
+        </tr>
+        @foreach (var supplier in Model.ToList())
+        {
+            <tr>
+                <td>@supplier.SupplierID</td>
+                <td>@Html.ActionLink(supplier.FirstName, "Edit", "Supplier", new { id = supplier.SupplierID }, new { @class = ".alert-link" })</td>
+                <td>@supplier.LastName</td>
+                <td>@supplier.CompanyName</td>
+            </tr>
+        }
+    </table>
+}
