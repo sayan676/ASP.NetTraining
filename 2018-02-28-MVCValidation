@@ -1,0 +1,117 @@
+
+
+AddNew.cshtml
+
+@model MVCApplication1.Models.Supplier
+@{
+    ViewBag.Title = "AddNew";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add New Supplier</h2>
+
+@using (Html.BeginForm("Save", "Supplier"))
+{
+    //@Html.ValidationSummary()
+    <div class="form-group">
+        @Html.LabelFor(s => s.FirstName)
+        @Html.TextBoxFor(s => s.FirstName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(s=>s.FirstName)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(s => s.LastName)
+        @Html.TextBoxFor(s => s.LastName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(s => s.LastName)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(s => s.CompanyName)
+        @Html.TextBoxFor(s => s.CompanyName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(s => s.CompanyName)
+    </div>
+    <div>
+        @Html.HiddenFor(p => p.SupplierID)
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="reset" class="btn btn-danger">Reset</button>
+    </div>
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+SupplierController.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using MVCApplication1.Models;
+using MVCApplication1.ViewModel;
+using MVCApplication1.DataAccessLayer;
+
+namespace MVCApplication1.Controllers
+{
+    public class SupplierController : Controller
+    {
+        // GET: Supplier
+        public ActionResult DisplaySuppliers()
+        {
+            var supplier = GetSuppliers();
+            return View(supplier);
+        }
+        public ActionResult AddNew()
+        {
+            Supplier s = new Supplier();
+            return View(s);
+        }
+        [HttpPost]
+        public ActionResult Save(Supplier supplier)
+        {
+            MVCDAL obj = new MVCDAL();
+            if (!ModelState.IsValid)
+            {
+                Supplier s1 = new Supplier();
+                s1.FirstName = supplier.FirstName;
+                s1.LastName = supplier.LastName;
+                s1.CompanyName = supplier.CompanyName;
+                return View("AddNew",s1);
+            }
+            if (supplier.SupplierID == 0)
+                obj.Supp.Add(supplier);
+            else
+            {
+                var s = obj.Supp.Find(supplier.SupplierID);
+                s.FirstName = supplier.FirstName;
+                s.LastName = supplier.LastName;
+                s.CompanyName = supplier.CompanyName;
+            }
+            obj.SaveChanges();
+            return RedirectToAction("DisplaySuppliers", "Supplier");
+        }
+        public List<Supplier> GetSuppliers()
+        {
+            MVCDAL dal = new MVCDAL();
+            return dal.Supp.ToList();
+        }
+        public ActionResult Edit(int id)
+        {
+            var supplier = GetSuppliers().SingleOrDefault(p => p.SupplierID == id);
+            if (supplier == null)
+                return HttpNotFound();
+            else
+                return View("AddNew", supplier);
+        }
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------------
+In site.css Add>
+
+.field-validation-error {
+    color: red;
+}
+
+.input-validation-error {
+    border-color: red;
+}
